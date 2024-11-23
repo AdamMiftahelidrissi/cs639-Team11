@@ -13,26 +13,31 @@ Many gyms don't have any sort of attendance data for workout classes. This can b
 
 
 Employee Management
+
 Clock-In/Clock-Out System: Employees can log their work hours via a simple interface.
 
 Employee Profiles: Personal details, roles, and assigned classes.
 
 
 Attendance Management
+
 Class-Specific Attendance: Instructors can mark attendance for each class session.
 
 Historical Attendance Records: Ability to view and export past attendance logs for compliance and reporting.
 
 
 Class Scheduling and Management
+
 Class Rosters: View the list of enrolled clients for a particular class.
 
 
 Reporting and Analytics
+
 Employee Work Hours: Automatic calculation of hours worked for payroll purposes.
 
 
 Administrative Features
+
 User Roles: Admins can manage employees, clients, and class rosters.
 
 
