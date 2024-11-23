@@ -19,6 +19,7 @@ Clock-In/Clock-Out System: Employees can log their work hours via a simple inter
 Employee Profiles: Personal details, roles, and assigned classes.
 
 
+
 Attendance Management
 
 Class-Specific Attendance: Instructors can mark attendance for each class session.
@@ -26,9 +27,11 @@ Class-Specific Attendance: Instructors can mark attendance for each class sessio
 Historical Attendance Records: Ability to view and export past attendance logs for compliance and reporting.
 
 
+
 Class Scheduling and Management
 
 Class Rosters: View the list of enrolled clients for a particular class.
+
 
 
 Reporting and Analytics
@@ -36,14 +39,18 @@ Reporting and Analytics
 Employee Work Hours: Automatic calculation of hours worked for payroll purposes.
 
 
+
 Administrative Features
 
 User Roles: Admins can manage employees, clients, and class rosters.
 
 
+
 Mobile-Friendly
 
 App optimized for mobile devices for on-the-go use by staff.
+
+
 
 Workflow
 
