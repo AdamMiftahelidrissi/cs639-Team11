@@ -14,11 +14,13 @@ Many gyms don't have any sort of attendance data for workout classes. This can b
 
 Employee Management
 Clock-In/Clock-Out System: Employees can log their work hours via a simple interface.
+
 Employee Profiles: Personal details, roles, and assigned classes.
 
 
 Attendance Management
 Class-Specific Attendance: Instructors can mark attendance for each class session.
+
 Historical Attendance Records: Ability to view and export past attendance logs for compliance and reporting.
 
 
@@ -35,11 +37,18 @@ User Roles: Admins can manage employees, clients, and class rosters.
 
 
 Mobile-Friendly
+
 App optimized for mobile devices for on-the-go use by staff.
+
 Workflow
+
 Employee Login: Staff log into the app using secure credentials.
+
 Clock In/Out: Upon arrival and departure, employees use the app to record work hours.
+
 Class Selection: Instructors select their class from a schedule or dashboard.
+
 Mark Attendance: They check off those who are present or record absences during the session.
+
 End of Day: Attendance and clocked hours are logged and accessible to administrators for review.
 
