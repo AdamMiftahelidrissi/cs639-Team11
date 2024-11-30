@@ -6,8 +6,7 @@
 
 [**Project Proposal Document**](https://docs.google.com/document/d/1Z396l4Irh_Z0e0w2AQosa6NYwPtUlH_QmhZf8eJQIeo/edit?usp=sharing)
 
-[**Design**]
-(https://docs.google.com/document/d/12chj5GcEXY3WX-IKLEP85VeRQpGWtO1M9WOZ-kIe9ho/edit)
+[**Design**](https://docs.google.com/document/d/12chj5GcEXY3WX-IKLEP85VeRQpGWtO1M9WOZ-kIe9ho/edit)
 
 ---
 
