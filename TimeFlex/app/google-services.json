@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "684167587601",
+    "project_id": "timeflex-2525b",
+    "storage_bucket": "timeflex-2525b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:684167587601:android:76eb958d3d72dd9e43ceb0",
+        "android_client_info": {
+          "package_name": "com.example.timeflex"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgVEHNg3wEaXxe4uGgQzdMEBmVi02G1y8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
