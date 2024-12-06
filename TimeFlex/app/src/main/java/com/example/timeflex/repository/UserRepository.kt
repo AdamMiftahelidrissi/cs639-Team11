@@ -30,4 +30,30 @@ class UserRepository {
                 onFailure(exception)
             }
     }
+
+    fun getUser(
+        userId: String,
+        onSuccess: (User) -> Unit,
+        onFailure: (Exception) -> Unit
+    ) {
+        firestore.collection("USERS")
+            .document(userId)
+            .get() // Get the document
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    // Convert the snapshot to a User object
+                    val user = documentSnapshot.toObject(User::class.java)
+                    if (user != null) {
+                        onSuccess(user)
+                    } else {
+                        onFailure(Exception("User data is null"))
+                    }
+                } else {
+                    onFailure(Exception("User does not exist"))
+                }
+            }
+            .addOnFailureListener { exception ->
+                onFailure(exception)
+            }
+    }
 }

@@ -27,6 +27,7 @@ fun LoginScreen(navController: NavController) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -117,6 +118,7 @@ fun LoginScreen(navController: NavController) {
                     LaunchedEffect(errorMessage) {
                         scope.launch {
                             snackbarHostState.showSnackbar(message = errorMessage!!)
+                            errorMessage = null
                         }
                     }
                 }

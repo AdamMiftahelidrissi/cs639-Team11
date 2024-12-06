@@ -13,6 +13,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -44,6 +45,7 @@ fun ForgotPasswordScreen(navController: NavController) {
 
     Scaffold(
         modifier = Modifier.fillMaxSize(),
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         content = { paddingValues ->
             Column(
                 modifier = Modifier
@@ -112,12 +114,14 @@ fun ForgotPasswordScreen(navController: NavController) {
                     LaunchedEffect(errorMessage) {
                         scope.launch {
                             snackbarHostState.showSnackbar(message = errorMessage!!)
+                            errorMessage = null
                         }
                     }
                 } else if (!successMessage.isNullOrEmpty()) {
-                    LaunchedEffect(errorMessage) {
+                    LaunchedEffect(successMessage) {
                         scope.launch {
-                            snackbarHostState.showSnackbar(message = errorMessage!!)
+                            snackbarHostState.showSnackbar(message = successMessage!!)
+                            successMessage = null
                         }
                     }
                 }
