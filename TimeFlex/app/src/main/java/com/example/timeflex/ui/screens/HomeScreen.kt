@@ -2,6 +2,7 @@ package com.example.timeflex.ui.screens
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -27,6 +28,8 @@ import com.example.timeflex.repository.ClassRepository
 import com.example.timeflex.data.User
 import com.example.timeflex.data.Class
 import com.example.timeflex.repository.UserRepository
+import com.example.timeflex.ui.navigation.Routes
+import com.example.timeflex.viewModel.SharedViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
@@ -35,6 +38,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HomeScreen(
     navController: NavController,
+    sharedViewModel: SharedViewModel,
     userRepository: UserRepository,
     classRepository: ClassRepository
 ) {
@@ -48,15 +52,7 @@ fun HomeScreen(
     // Fetch user data
     LaunchedEffect(currentUserId) {
         if (currentUserId.isNotBlank()) {
-            userRepository.getUser(
-                userId = currentUserId,
-                onSuccess = { user ->
-                    currentUser = user
-                },
-                onFailure = { exception ->
-                    errorMessage = "Error fetching user: ${exception.message}"
-                }
-            )
+            currentUser = userRepository.getUser(userId = currentUserId)
         } else {
             errorMessage = "User is not logged in."
         }
@@ -129,7 +125,15 @@ fun HomeScreen(
                             )
                         }
                         items(classesToday) { classItem ->
-                            ClassCard(classItem, currentUser!!)
+                            ClassCard(
+                                classItem = classItem,
+                                user = currentUser!!,
+                                isClickable = true,
+                                onClick = {
+                                    sharedViewModel.selectClass(classItem)
+                                    navController.navigate(Routes.ATTENDANCE)
+                                }
+                            )
                         }
                     }
 
@@ -143,7 +147,12 @@ fun HomeScreen(
                             )
                         }
                         items(otherClasses) { classItem ->
-                            ClassCard(classItem, currentUser!!)
+                            ClassCard(
+                                classItem = classItem,
+                                user = currentUser!!,
+                                isClickable = false,
+                                onClick = {}
+                            )
                         }
                     }
                 }
@@ -168,11 +177,12 @@ fun HomeScreen(
 }
 
 @Composable
-fun ClassCard(classItem: Class, user: User) {
+fun ClassCard(classItem: Class, user: User, isClickable: Boolean, onClick: (Class) -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp),
+            .padding(vertical = 8.dp)
+            .let { if (isClickable) it.clickable { onClick(classItem) } else it },
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
@@ -184,7 +194,7 @@ fun ClassCard(classItem: Class, user: User) {
 
             // Instructor
             Text(
-                text = "Instructor: ${user.firstName} ${user.lastName}",
+                text = "Instructor Name: ${user.firstName} ${user.lastName}",
                 style = MaterialTheme.typography.bodyMedium
             )
 

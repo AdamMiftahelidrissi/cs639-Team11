@@ -5,6 +5,7 @@ object Routes {
     const val CREATE_ACCOUNT = "createAccount"
     const val FORGOT_PASSWORD = "forgotPassword"
     const val HOME = "home"
+    const val ATTENDANCE = "attendance"
     const val CALENDER = "calender"
     const val CLOCK = "clock"
     const val PROFILE = "profile"

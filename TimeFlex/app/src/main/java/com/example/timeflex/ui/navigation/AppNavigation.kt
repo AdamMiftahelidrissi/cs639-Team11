@@ -12,9 +12,10 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
+import com.example.timeflex.repository.AttendanceRepository
 import com.example.timeflex.repository.ClassRepository
 import com.example.timeflex.repository.UserRepository
+import com.example.timeflex.ui.screens.AttendanceScreen
 import com.example.timeflex.ui.screens.CalenderScreen
 import com.example.timeflex.ui.screens.ClockScreen
 import com.example.timeflex.ui.screens.CreateAccountScreen
@@ -22,13 +23,15 @@ import com.example.timeflex.ui.screens.ForgotPasswordScreen
 import com.example.timeflex.ui.screens.HomeScreen
 import com.example.timeflex.ui.screens.LoginScreen
 import com.example.timeflex.ui.screens.ProfileScreen
+import com.example.timeflex.viewModel.SharedViewModel
 import com.google.firebase.auth.FirebaseAuth
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AppNavigation(
     modifier: Modifier = Modifier,
-    navController: NavHostController
+    navController: NavHostController,
+    sharedViewModel: SharedViewModel
 ) {
     val firebaseAuth = FirebaseAuth.getInstance()
 
@@ -72,7 +75,16 @@ fun AppNavigation(
             HomeScreen(
                 navController = navController,
                 userRepository = UserRepository(),
-                classRepository = ClassRepository()
+                classRepository = ClassRepository(),
+                sharedViewModel = sharedViewModel
+            )
+        }
+        composable(route = Routes.ATTENDANCE) {
+            AttendanceScreen(
+                navController = navController,
+                classRepository = ClassRepository(),
+                attendanceRepository = AttendanceRepository(),
+                sharedViewModel = sharedViewModel
             )
         }
         composable(route = Routes.CALENDER) {

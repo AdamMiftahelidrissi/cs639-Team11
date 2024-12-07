@@ -3,6 +3,7 @@ package com.example.timeflex.repository
 import com.example.timeflex.data.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.tasks.await
 
 class UserRepository {
     private val firebaseAuth = FirebaseAuth.getInstance()
@@ -31,29 +32,21 @@ class UserRepository {
             }
     }
 
-    fun getUser(
-        userId: String,
-        onSuccess: (User) -> Unit,
-        onFailure: (Exception) -> Unit
-    ) {
-        firestore.collection("USERS")
-            .document(userId)
-            .get() // Get the document
-            .addOnSuccessListener { documentSnapshot ->
-                if (documentSnapshot.exists()) {
-                    // Convert the snapshot to a User object
-                    val user = documentSnapshot.toObject(User::class.java)
-                    if (user != null) {
-                        onSuccess(user)
-                    } else {
-                        onFailure(Exception("User data is null"))
-                    }
-                } else {
-                    onFailure(Exception("User does not exist"))
-                }
+    suspend fun getUser(userId: String): User {
+        return try {
+            val documentSnapshot = firestore.collection("USERS")
+                .document(userId)
+                .get()
+                .await()
+
+            if (documentSnapshot.exists()) {
+                documentSnapshot.toObject(User::class.java)
+                    ?: throw Exception("User data is null")
+            } else {
+                throw Exception("User does not exist")
             }
-            .addOnFailureListener { exception ->
-                onFailure(exception)
-            }
+        } catch (e: Exception) {
+            throw Exception("Failed to fetch user: ${e.message}", e)
+        }
     }
 }

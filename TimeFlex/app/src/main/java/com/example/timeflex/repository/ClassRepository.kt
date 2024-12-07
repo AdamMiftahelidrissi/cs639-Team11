@@ -42,4 +42,27 @@ class ClassRepository {
 
         awaitClose { listenerRegistration.remove() }
     }
+
+    fun getStudentsForClass(classId: String): Flow<List<String>> = callbackFlow {
+        val firestore = FirebaseFirestore.getInstance()
+        val classDocumentRef = firestore.collection("CLASSES").document(classId)
+
+        val listener = classDocumentRef.addSnapshotListener { snapshot, error ->
+            if (error != null) {
+                close(error) // Emit an error and close the flow
+                return@addSnapshotListener
+            }
+
+            if (snapshot != null && snapshot.exists()) {
+                val students = snapshot.get("students") as? List<String> ?: emptyList()
+                trySend(students).isSuccess // Emit the list of students
+            } else {
+                trySend(emptyList()).isSuccess // Emit an empty list if the document doesn't exist
+            }
+        }
+
+        // Remove the listener when the flow is closed
+        awaitClose { listener.remove() }
+    }
+
 }
