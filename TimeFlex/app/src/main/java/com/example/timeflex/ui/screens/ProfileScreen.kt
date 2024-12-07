@@ -9,15 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.timeflex.ui.navigation.Routes
 
-
 @Composable
 fun ProfileScreen(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Top, // Aligns items from the top
+        horizontalAlignment = Alignment.Start // Aligns all items to the start (left)
     ) {
         // Title
         Text(
@@ -29,7 +28,6 @@ fun ProfileScreen(navController: NavController) {
         // Attendance Records Button
         TextButton(
             onClick = { navController.navigate(Routes.ATTENDANCE_RECORDS) },
-            modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 text = "Attendance Records",
@@ -37,12 +35,11 @@ fun ProfileScreen(navController: NavController) {
             )
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         // Time Sheets Button
         TextButton(
             onClick = { navController.navigate(Routes.TIME_SHEETS) },
-            modifier = Modifier.fillMaxWidth()
         ) {
             Text(
                 text = "Time Sheets",

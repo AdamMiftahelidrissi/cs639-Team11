@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import com.example.timeflex.repository.AttendanceRepository
 import com.example.timeflex.repository.ClassRepository
 import com.example.timeflex.repository.UserRepository
+import com.example.timeflex.ui.screens.AttendanceRecordsScreen
 import com.example.timeflex.ui.screens.AttendanceScreen
 import com.example.timeflex.ui.screens.CalenderScreen
 import com.example.timeflex.ui.screens.ClockScreen
@@ -23,6 +24,7 @@ import com.example.timeflex.ui.screens.ForgotPasswordScreen
 import com.example.timeflex.ui.screens.HomeScreen
 import com.example.timeflex.ui.screens.LoginScreen
 import com.example.timeflex.ui.screens.ProfileScreen
+import com.example.timeflex.ui.screens.TimeSheetsScreen
 import com.example.timeflex.viewModel.SharedViewModel
 import com.google.firebase.auth.FirebaseAuth
 
@@ -95,6 +97,17 @@ fun AppNavigation(
         }
         composable(route = Routes.PROFILE) {
             ProfileScreen(navController = navController)
+        }
+        composable(route = Routes.ATTENDANCE_RECORDS) {
+            AttendanceRecordsScreen(
+                navController = navController,
+                userRepository = UserRepository(),
+                attendanceRepository = AttendanceRepository(),
+                classRepository = ClassRepository()
+            )
+        }
+        composable(route = Routes.TIME_SHEETS) {
+            TimeSheetsScreen(navController = navController)
         }
     }
 }
