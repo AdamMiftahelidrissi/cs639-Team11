@@ -9,4 +9,6 @@ object Routes {
     const val CALENDER = "calender"
     const val CLOCK = "clock"
     const val PROFILE = "profile"
+    const val ATTENDANCE_RECORDS = "attendanceRecords"
+    const val TIME_SHEETS = "timeSheets"
 }
