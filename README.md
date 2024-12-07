@@ -7,9 +7,10 @@ This app is designed to streamline gym operations by enabling **employees to clo
 ## **Features**
 - **Clock-In/Clock-Out System**: Tracks employee work hours for payroll.
 - **Class Attendance Management**: Allows instructors to mark attendance.
+- **Calendar View**: Allows employees & clients to see their schedule for the month.
 - **Employee and Class Profiles**: Stores details of staff and enrolled clients.
 - **Reporting and Analytics**: Generates work hour summaries and attendance logs.
-- **Mobile-Friendly Design**: Optimized for on-the-go usage by gym staff
+- **Mobile-Friendly Design**: Optimized for on-the-go usage by gym staff.
 
 [**Project Proposal Document**](https://docs.google.com/document/d/1Z396l4Irh_Z0e0w2AQosa6NYwPtUlH_QmhZf8eJQIeo/edit?usp=sharing)
 
