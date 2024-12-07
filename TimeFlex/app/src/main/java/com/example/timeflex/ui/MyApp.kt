@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.timeflex.repository.UserRepository
 import com.example.timeflex.ui.components.AppBottomBar
 import com.example.timeflex.ui.components.AppTopBar
 import com.example.timeflex.ui.navigation.AppNavigation
@@ -27,7 +28,7 @@ fun MyApp() {
             println("Current top bar destination: $currentDestination")
             if (currentDestination != null && currentDestination !in listOf(
                     Routes.LOGIN, Routes.CREATE_ACCOUNT, Routes.FORGOT_PASSWORD)) {
-                AppTopBar(navController)
+                AppTopBar(navController, userRepository = UserRepository())
             }
         },
         bottomBar = {
