@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.timeflex.ui.navigation.Routes
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun ProfileScreen(navController: NavController) {
@@ -43,6 +44,21 @@ fun ProfileScreen(navController: NavController) {
         ) {
             Text(
                 text = "Time Sheets",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+
+        // Sign Out Button
+        TextButton(
+            onClick = {
+                navController.navigate(Routes.LOGIN)
+                FirebaseAuth.getInstance().signOut()
+            },
+        ) {
+            Text(
+                text = "Sign Out",
                 style = MaterialTheme.typography.bodyLarge
             )
         }

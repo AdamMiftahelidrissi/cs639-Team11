@@ -222,7 +222,7 @@ fun AttendanceRecordCard(record: AttendanceRecord) {
             Text(
                 text = record.status.name,
                 style = MaterialTheme.typography.bodyMedium,
-                color = if (record.status == AttendanceStatus.PRESENT) Color.Green else Color.Red
+                color = if (record.status == AttendanceStatus.PRESENT) Color(0xFF388E3C) else Color.Red
             )
         }
     }
