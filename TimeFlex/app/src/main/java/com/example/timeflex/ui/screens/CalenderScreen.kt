@@ -110,13 +110,14 @@ fun CalenderScreen(
                                         // Filter and display classes for the day of the week
                                         val dayClasses = classes.flatMap { classItem ->
                                             classItem.schedule.filter { it.day == dayOfWeek }
-                                                .map { schedule ->
-                                                    "${classItem.name} (${schedule.startTime} - ${schedule.endTime})"
+                                                .map {
+                                                    classItem.name
                                                 }
                                         }
-                                        dayClasses.forEach { classInfo ->
+
+                                        dayClasses.forEach { className ->
                                             Text(
-                                                text = classInfo,
+                                                text = className,
                                                 fontSize = 10.sp,
                                                 modifier = Modifier.padding(top = 4.dp),
                                                 maxLines = 1, // Avoid text overflow
