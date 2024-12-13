@@ -83,7 +83,7 @@ fun CalenderScreen(
                                     modifier = Modifier
                                         .weight(1f) // Allows equal distribution of width among cells in the row
                                         .padding(4.dp) // Adds space around the box
-                                        .fillMaxHeight() // Allows the box to expand vertically to fit its content
+                                        .height(100.dp)
                                         .background(
                                             color = if (dayOfMonth == today.dayOfMonth) Color.Gray else Color.LightGray,
                                             shape = RoundedCornerShape(8.dp)
@@ -91,7 +91,6 @@ fun CalenderScreen(
                                         .clickable {
                                             // Navigate or handle click
                                         }
-                                        .border(1.dp, Color.Black) // Debug border to visualize the box
                                 ) {
                                     Column(
                                         horizontalAlignment = Alignment.CenterHorizontally,
