@@ -90,7 +90,10 @@ fun AppNavigation(
             )
         }
         composable(route = Routes.CALENDER) {
-            CalenderScreen(navController = navController)
+            CalenderScreen(
+                navController = navController,
+                classRepository = ClassRepository()
+            )
         }
         composable(route = Routes.CLOCK) {
             ClockScreen(navController = navController)

@@ -1,5 +1,7 @@
 package com.example.timeflex.ui.components
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
@@ -15,7 +17,11 @@ import com.example.timeflex.repository.UserRepository
 import com.example.timeflex.ui.navigation.Routes
 import com.google.firebase.auth.FirebaseAuth
 import com.example.timeflex.data.User
+import java.time.LocalDate
+import java.util.Locale
+import java.time.format.TextStyle
 
+@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppTopBar(
@@ -39,7 +45,7 @@ fun AppTopBar(
             Text(
                 text = when (currentRoute) {
                     Routes.HOME -> "Home"
-                    Routes.CALENDER -> "Monthly"
+                    Routes.CALENDER -> LocalDate.now().month.getDisplayName(TextStyle.FULL, Locale.getDefault())
                     Routes.CLOCK -> "Clock In/Out"
                     Routes.PROFILE -> user?.let { "${it.firstName} ${it.lastName}" } ?: "Profile"
                     else -> "TimeFlex"

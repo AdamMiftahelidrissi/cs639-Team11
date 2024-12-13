@@ -13,7 +13,7 @@ class ClassRepository {
     private val firestore = FirebaseFirestore.getInstance()
 
     fun getAllClasses(): Flow<List<Class>> = callbackFlow {
-        val listenerRegistration = firestore.collection("classes")
+        val listenerRegistration = firestore.collection("CLASSES")
             .addSnapshotListener { snapshot, exception ->
                 if (exception != null) {
                     close(exception)
