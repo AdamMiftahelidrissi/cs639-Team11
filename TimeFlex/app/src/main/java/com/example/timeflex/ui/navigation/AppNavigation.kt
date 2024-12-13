@@ -14,6 +14,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.timeflex.repository.AttendanceRepository
 import com.example.timeflex.repository.ClassRepository
+import com.example.timeflex.repository.TimeSheetRepository
 import com.example.timeflex.repository.UserRepository
 import com.example.timeflex.ui.screens.AttendanceRecordsScreen
 import com.example.timeflex.ui.screens.AttendanceScreen
@@ -96,7 +97,10 @@ fun AppNavigation(
             )
         }
         composable(route = Routes.CLOCK) {
-            ClockScreen(navController = navController)
+            ClockScreen(
+                navController = navController,
+                timeSheetRepository = TimeSheetRepository()
+            )
         }
         composable(route = Routes.PROFILE) {
             ProfileScreen(navController = navController)
@@ -110,7 +114,10 @@ fun AppNavigation(
             )
         }
         composable(route = Routes.TIME_SHEETS) {
-            TimeSheetsScreen(navController = navController)
+            TimeSheetsScreen(
+                navController = navController,
+                timeSheetRepository = TimeSheetRepository()
+            )
         }
     }
 }

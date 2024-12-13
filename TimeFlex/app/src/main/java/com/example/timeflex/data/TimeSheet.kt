@@ -6,5 +6,5 @@ data class TimeSheet(
     val date: String = "",
     val startTime: String = "",
     val endTime: String = "",
-    val totalHours: String = ""
+    val totalTime: String = ""
 )
