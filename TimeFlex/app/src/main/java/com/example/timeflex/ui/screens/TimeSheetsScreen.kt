@@ -9,8 +9,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.timeflex.data.TimeSheet
 import com.example.timeflex.repository.TimeSheetRepository
@@ -56,19 +58,45 @@ fun TimeSheetsScreen(
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Date Selector
-        DatePickerSelector(
-            label = "Select a Date",
-            selectedDate = selectedDate,
-            onDateSelected = { selectedDate = it }
-        )
+        // Row for Date Picker and "Show All" Button
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            // Date Picker Button
+            DatePickerSelector(
+                label = "Select a Date",
+                selectedDate = selectedDate,
+                onDateSelected = { selectedDate = it }
+            )
+
+            // "Show All" Button
+            Button(
+                onClick = { selectedDate = null }, // Reset selected date to show all timesheets
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Text(text = "Show All")
+            }
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Display Timesheets
-        LazyColumn(modifier = Modifier.fillMaxSize()) {
-            items(filteredTimeSheets) { timeSheet ->
-                TimeSheetItem(timeSheet = timeSheet)
+        // Display Timesheets or a "No Data" Message
+        if (filteredTimeSheets.isEmpty()) {
+            Text(
+                text = "No timesheets available for the selected date.",
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                textAlign = TextAlign.Center
+            )
+        } else {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(filteredTimeSheets) { timeSheet ->
+                    TimeSheetItem(timeSheet = timeSheet)
+                }
             }
         }
     }

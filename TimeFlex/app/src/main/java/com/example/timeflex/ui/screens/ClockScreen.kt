@@ -25,6 +25,8 @@ fun ClockScreen(
     timeSheetRepository: TimeSheetRepository
 ) {
     val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    var errorMessage by remember { mutableStateOf<String?>(null) }
 
     // State variables for clock-in and clock-out times
     var clockInTime by remember { mutableStateOf<LocalTime?>(null) }
@@ -34,99 +36,139 @@ fun ClockScreen(
     // Get today's date
     val todayDate = LocalDate.now().format(DateTimeFormatter.ofPattern("MMMM dd, yyyy"))
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        // Display today's date
-        Text(
-            text = todayDate,
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(bottom = 16.dp)
-        )
-
-        // Clock-in and Clock-out buttons
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+    Scaffold(
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(innerPadding)
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            // Clock-in button
+            // Display today's date
+            Text(
+                text = todayDate,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.padding(bottom = 16.dp)
+            )
+
+            // Clock-in, Clock-out, and Cancel buttons
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                // Clock-in button
+                Button(
+                    onClick = {
+                        clockInTime = LocalTime.now()
+                        clockOutTime = null // Reset clock-out when clock-in is pressed
+                        totalWorkedTime = ""
+                    },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(text = "Clock In")
+                }
+                // Clock-out button
+                Button(
+                    onClick = {
+                        scope.launch {
+                            if (clockInTime == null) {
+                                errorMessage = "Please clock in first."
+                                return@launch
+                            } else if (clockOutTime != null) {
+                                errorMessage = "Already clocked out."
+                                return@launch
+                            } else {
+                                clockOutTime = LocalTime.now()
+                                val duration = java.time.Duration.between(clockInTime, clockOutTime)
+                                val hours = duration.toHours()
+                                val minutes = duration.toMinutes() % 60
+                                totalWorkedTime = "${hours}h ${minutes}m"
+                                val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
+                                val newTimeSheet = TimeSheet(
+                                    userId = userId,
+                                    date = todayDate,
+                                    startTime = clockInTime.toString(),
+                                    endTime = clockOutTime.toString(),
+                                    totalTime = totalWorkedTime
+                                )
+                                timeSheetRepository.addTimeSheet(newTimeSheet)
+                            }
+                        }
+                    },
+                    modifier = Modifier.weight(1f)
+                ) {
+                    Text(text = "Clock Out")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Display clock-in and clock-out times
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                // Clock-in time
+                Text(
+                    text = if (clockInTime != null) {
+                        "Clock In: ${clockInTime?.format(DateTimeFormatter.ofPattern("hh:mm a"))}"
+                    } else {
+                        "Clock In: --"
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+                // Clock-out time
+                Text(
+                    text = if (clockOutTime != null) {
+                        "Clock Out: ${clockOutTime?.format(DateTimeFormatter.ofPattern("hh:mm a"))}"
+                    } else {
+                        "Clock Out: --"
+                    },
+                    modifier = Modifier.weight(1f)
+                )
+            }
+
+            // Display total worked hours and minutes
+            Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = if (totalWorkedTime.isNotEmpty()) {
+                    "Total Time Worked: $totalWorkedTime"
+                } else {
+                    "Total Time Worked: --"
+                },
+                style = MaterialTheme.typography.bodyLarge,
+                modifier = Modifier.padding(top = 8.dp)
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            // Cancel button
             Button(
                 onClick = {
-                    clockInTime = LocalTime.now()
-                    clockOutTime = null // Reset clock-out when clock-in is pressed
+                    clockInTime = null
+                    clockOutTime = null
                     totalWorkedTime = ""
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(0.5f) // Adjust width for the cancel button
             ) {
-                Text(text = "Clock In")
+                Text(text = "Cancel")
             }
-            // Clock-out button
-            Button(
-                onClick = {
+
+            // Error Message
+            if (!errorMessage.isNullOrEmpty()) {
+                LaunchedEffect(errorMessage) {
                     scope.launch {
-                        clockOutTime = LocalTime.now()
-                        val duration = java.time.Duration.between(clockInTime, clockOutTime)
-                        val hours = duration.toHours()
-                        val minutes = duration.toMinutes() % 60
-                        totalWorkedTime = "${hours}h ${minutes}m"
-                        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
-                        val newTimeSheet = TimeSheet(
-                            userId = userId,
-                            date = todayDate,
-                            startTime = clockInTime.toString(),
-                            endTime = clockOutTime.toString(),
-                            totalTime = totalWorkedTime
-                        )
-                        timeSheetRepository.addTimeSheet(newTimeSheet)
+                        snackbarHostState.showSnackbar(message = errorMessage!!)
+                        errorMessage = null // Clear after showing
                     }
-                },
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(text = "Clock Out")
+                }
             }
         }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        // Display clock-in and clock-out times
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            // Clock-in time
-            Text(
-                text = if (clockInTime != null) {
-                    "Clock In: ${clockInTime?.format(DateTimeFormatter.ofPattern("hh:mm a"))}"
-                } else {
-                    "Clock In: --"
-                },
-                modifier = Modifier.weight(1f)
-            )
-            // Clock-out time
-            Text(
-                text = if (clockOutTime != null) {
-                    "Clock Out: ${clockOutTime?.format(DateTimeFormatter.ofPattern("hh:mm a"))}"
-                } else {
-                    "Clock Out: --"
-                },
-                modifier = Modifier.weight(1f)
-            )
-        }
-
-        // Display total worked hours and minutes
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = if (totalWorkedTime.isNotEmpty()) {
-                "Total Time Worked: $totalWorkedTime"
-            } else {
-                "Total Time Worked: --"
-            },
-            style = MaterialTheme.typography.bodyLarge,
-            modifier = Modifier.padding(top = 8.dp)
-        )
     }
 }
