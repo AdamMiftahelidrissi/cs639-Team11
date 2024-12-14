@@ -99,6 +99,7 @@ fun AppNavigation(
         composable(route = Routes.CLOCK) {
             ClockScreen(
                 navController = navController,
+                sharedViewModel = sharedViewModel,
                 timeSheetRepository = TimeSheetRepository()
             )
         }

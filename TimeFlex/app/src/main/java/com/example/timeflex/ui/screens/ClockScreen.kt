@@ -12,6 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.timeflex.data.TimeSheet
 import com.example.timeflex.repository.TimeSheetRepository
+import com.example.timeflex.viewModel.SharedViewModel
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -22,6 +23,7 @@ import java.time.format.DateTimeFormatter
 @Composable
 fun ClockScreen(
     navController: NavController,
+    sharedViewModel: SharedViewModel,
     timeSheetRepository: TimeSheetRepository
 ) {
     val scope = rememberCoroutineScope()
@@ -29,7 +31,7 @@ fun ClockScreen(
     var errorMessage by remember { mutableStateOf<String?>(null) }
 
     // State variables for clock-in and clock-out times
-    var clockInTime by remember { mutableStateOf<LocalTime?>(null) }
+    val clockInTime by sharedViewModel.clockInTime.collectAsState()
     var clockOutTime by remember { mutableStateOf<LocalTime?>(null) }
     var totalWorkedTime by remember { mutableStateOf("") }
 
@@ -63,7 +65,8 @@ fun ClockScreen(
                 // Clock-in button
                 Button(
                     onClick = {
-                        clockInTime = LocalTime.now()
+                        val now = LocalTime.now()
+                        sharedViewModel.setClockInTime(now)
                         clockOutTime = null // Reset clock-out when clock-in is pressed
                         totalWorkedTime = ""
                     },
@@ -149,7 +152,7 @@ fun ClockScreen(
             // Cancel button
             Button(
                 onClick = {
-                    clockInTime = null
+                    sharedViewModel.clearClockInTime()
                     clockOutTime = null
                     totalWorkedTime = ""
                 },
